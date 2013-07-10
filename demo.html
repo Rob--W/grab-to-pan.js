@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>Grab-to-pan.js demo</title>
+<style>
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.scrollable {
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    max-width: 300px;
+    max-height: 300px;
+    background-color: #EEE;
+}
+.filler {
+    width: 200%;
+    font-size: 100px; /* I don't want to type a huge wall of Lorem ipsum */
+}
+</style>
+</head>
+<body>
+<label><input type="checkbox" id="activate-g2p" checked> Activate Grab to Pan</label>
+<div class="scrollable" id="scrollable-container">
+    <div class="filler">
+        Grab to pan - Grab this section with your mouse, and move your mouse around to pan the content.
+    </div>
+</div>
+<script src="grab-to-pan.js"></script>
+<script>
+document.getElementById('activate-g2p').onchange = function() {
+    if (this.checked) g2p.activate();
+    else g2p.deactivate();
+};
+
+var scrollableContainer = document.getElementById('scrollable-container');
+var g2p = new GrabToPan({
+    element: scrollableContainer
+});
+g2p.activate();
+
+</script>
+</body>
+</html>
