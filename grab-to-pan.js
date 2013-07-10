@@ -16,16 +16,96 @@
 'use strict';
 
 var GrabToPan = (function GrabToPanClosure() {
+  /**
+   * Construct a GrabToPan instance for a given HTML element.
+   * @param options {{element: Element}}
+   **/
   function GrabToPan(options) {
     this.element = options.element;
+    this.document = options.element.ownerDocument;
+
+    // Bind the contexts to ensure that `this` always points to
+    // the GrabToPan instance.
+    this._onmousedown = this._onmousedown.bind(this);
+    this._onmousemove = this._onmousemove.bind(this);
+    this._onmouseup = this._onmouseup.bind(this);
   }
   GrabToPan.prototype = {
     activate: function GrabToPan_activate() {
-
+      // When addEventListener is repeatedly called with the same arguments,
+      // the listener is added only once, so there's no need to manually
+      // check whether or not activate() has been called before.
+      this.element.addEventListener('mousedown', this._onmousedown, true);
     },
     deactivate: function GrabToPan_deactivate() {
+      this.element.removeEventListener('mousedown', this._onmousedown, true);
+      this.document.removeEventListener('mousemove', this._onmousemove, true);
+      this.document.removeEventListener('mouseup', this._onmouseup, true);
+    },
+    /**
+     * @private
+     **/
+    _onmousedown: function GrabToPan__onmousedown(event) {
+      if (event.button !== 0) return;
 
+      this.scrollLeftStart = this.element.scrollLeft;
+      this.scrollTopStart = this.element.scrollTop;
+      this.clientXStart = event.clientX;
+      this.clientYStart = event.clientY;
+      this.document.addEventListener('mousemove', this._onmousemove, true);
+      this.document.addEventListener('mouseup', this._onmouseup, true);
+      event.preventDefault();
+    },
+    /**
+     * @private
+     **/
+    _onmousemove: function GrabToPan__onmousemove(event) {
+      if (isLeftMouseReleased(event)) {
+        this.document.removeEventListener('mousemove', this._onmousemove, true);
+        return;
+      }
+      var xDiff = event.clientX - this.clientXStart;
+      var yDiff = event.clientY - this.clientYStart;
+      this.element.scrollTop = this.scrollTopStart - yDiff;
+      this.element.scrollLeft = this.scrollLeftStart - xDiff;
+    },
+    /**
+     * @private
+     **/
+    _onmouseup: function GrabToPan__onmouseup(event) {
+      this.document.removeEventListener('mousemove', this._onmousemove, true);
     }
   };
+
+  // Browser sniffing because it's impossible to feature-detect
+  // whether event.which for onmousemove is reliable
+  var isNotIEorIsIE10plus = !document.documentMode || document.documentMode > 9;
+  var chrome = window.chrome;
+  var isChrome15OrOpera15plus = chrome&& (chrome.webstore || chrome.app);
+  //                                      ^ Chrome 15+       ^ Opera 15+
+  var isSafari6plus = /Apple/.test(navigator.vendor) &&
+                      /Version\/([6-9]\d*|[1-5]\d+)/.test(navigator.userAgent);
+
+  /**
+   * Whether the left mouse is not pressed.
+   * @param event {MouseEvent}
+   * @return {boolean} True if the left mouse button is not pressed.
+   *                   False if unsure or if the left mouse button is pressed.
+   **/
+  function isLeftMouseReleased(event) {
+    if ('buttons' in event && isNotIEorIsIE10plus) {
+      // http://www.w3.org/TR/DOM-Level-3-Events/#events-MouseEvent-buttons
+      // Firefox 15+
+      // Internet Explorer 10+
+      return !(event.buttons | 1);
+    }
+    if (isChrome15OrOpera15plus || isSafari6plus) {
+      // Chrome 14+
+      // Opera 15+
+      // Safari 6.0+
+      return event.which === 0;
+    }
+  }
+
   return GrabToPan;
 })();
