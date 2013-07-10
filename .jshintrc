@@ -1,0 +1,10 @@
+{
+  "browser": true,
+  "devel": true,
+
+  "maxlen": 80,
+  "quotmark": "single",
+
+  "globalstrict": true,
+  "maxerr": 1000
+}

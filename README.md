@@ -18,6 +18,24 @@ g2p.deactivate();
 In other words: This library allows one to change the scrolling offset of a
 container by moving the mouse while the mouse button is pressed.
 
+# Code conventions
+This library follows the [code conventions of PDF.js](https://github.com/mozilla/pdf.js/wiki/Style-Guide),
+because it was written for use in PDF.js.
+
+The library declares only one object, `GrabToPan`. CommonJS/AMD modularity is
+not included, but can easily be added if you wish:
+
+```// CommonJS
+// <grab-to-pan.js code here>
+module.exports = GrabToPan;
+
+// AMD
+define(function() {
+    // <grab-to-pan.js code here>
+    return GrabToPan; 
+});
+```
+
 # License
 
 Copyright 2013 Rob Wu <gwnRob@gmail.com>

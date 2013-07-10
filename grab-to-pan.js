@@ -13,3 +13,19 @@
  * limitations under the License.
  */
 
+'use strict';
+
+var GrabToPan = (function GrabToPanClosure() {
+  function GrabToPan(options) {
+    this.element = options.element;
+  }
+  GrabToPan.prototype = {
+    activate: function GrabToPan_activate() {
+
+    },
+    deactivate: function GrabToPan_deactivate() {
+
+    }
+  };
+  return GrabToPan;
+})();
