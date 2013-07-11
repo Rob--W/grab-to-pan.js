@@ -15,6 +15,17 @@ g2p.activate();
 g2p.deactivate();
 ```
 
+By default, when a link or input element is clicked, panning
+does not occur. You can change this behaviour by overriding the
+ignoreTarget method. For instance:
+
+```javascript
+g2p.ignoreTarget = function(targetElement) {
+    return false; // Always capture click, even if a link/input element is grabbed.
+};
+```
+
+
 In other words: This library allows one to change the scrolling offset of a
 container by moving the mouse while the mouse button is pressed.
 

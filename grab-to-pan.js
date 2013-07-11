@@ -23,6 +23,9 @@ var GrabToPan = (function GrabToPanClosure() {
   function GrabToPan(options) {
     this.element = options.element;
     this.document = options.element.ownerDocument;
+    if (typeof options.ignoreTarget === 'function') {
+        this.ignoreTarget = options.ignoreTarget;
+    }
 
     // Bind the contexts to ensure that `this` always points to
     // the GrabToPan instance.
@@ -43,10 +46,24 @@ var GrabToPan = (function GrabToPanClosure() {
       this.document.removeEventListener('mouseup', this._onmouseup, true);
     },
     /**
+     * Whether to not pan if the target element is clicked.
+     * Override this method to change the default behaviour.
+     *
+     * @param node {Element} The target of the event
+     * @return {boolean} Whether to not react to the click event.
+     **/
+    ignoreTarget: function(node) {
+        // Use matchesSelector to check whether the clicked element
+        // is (a child of) an input element / link
+        return node[matchesSelector](
+            'a, * a, input, textarea, button, button *, select, option'
+        );
+    },
+    /**
      * @private
      **/
     _onmousedown: function GrabToPan__onmousedown(event) {
-      if (event.button !== 0) return;
+      if (event.button !== 0 || this.ignoreTarget(event.target)) return;
 
       this.scrollLeftStart = this.element.scrollLeft;
       this.scrollTopStart = this.element.scrollTop;
@@ -55,6 +72,7 @@ var GrabToPan = (function GrabToPanClosure() {
       this.document.addEventListener('mousemove', this._onmousemove, true);
       this.document.addEventListener('mouseup', this._onmouseup, true);
       event.preventDefault();
+      event.stopPropagation();
     },
     /**
      * @private
@@ -76,6 +94,20 @@ var GrabToPan = (function GrabToPanClosure() {
       this.document.removeEventListener('mousemove', this._onmousemove, true);
     }
   };
+
+  // Get the correct (vendor-prefixed) name of the matches method.
+  var matchesSelector;
+  ['webkitM', 'mozM', 'msM', 'oM', 'm'].some(function(prefix) {
+      var name = prefix + 'atches';
+      if (name in document.documentElement) {
+          matchesSelector = name;
+      }
+      name += 'Selector';
+      if (name in document.documentElement) {
+          matchesSelector = name;
+      }
+      return matchesSelector; // If found, then truthy, and [].some() ends.
+  });
 
   // Browser sniffing because it's impossible to feature-detect
   // whether event.which for onmousemove is reliable
