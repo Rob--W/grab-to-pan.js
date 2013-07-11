@@ -29,17 +29,25 @@ var GrabToPan = (function GrabToPanClosure() {
 
     // Bind the contexts to ensure that `this` always points to
     // the GrabToPan instance.
+    this.activate = this.activate.bind(this);
+    this.deactivate = this.deactivate.bind(this);
     this._onmousedown = this._onmousedown.bind(this);
     this._onmousemove = this._onmousemove.bind(this);
     this._onmouseup = this._onmouseup.bind(this);
   }
   GrabToPan.prototype = {
+    /**
+     * Bind a mousedown event to the element to enable grab-detection.
+     **/
     activate: function GrabToPan_activate() {
       // When addEventListener is repeatedly called with the same arguments,
       // the listener is added only once, so there's no need to manually
       // check whether or not activate() has been called before.
       this.element.addEventListener('mousedown', this._onmousedown, true);
     },
+    /**
+     * Removes all events. Any pending pan session is immediately stopped.
+     **/
     deactivate: function GrabToPan_deactivate() {
       this.element.removeEventListener('mousedown', this._onmousedown, true);
       this.document.removeEventListener('mousemove', this._onmousemove, true);
@@ -52,7 +60,7 @@ var GrabToPan = (function GrabToPanClosure() {
      * @param node {Element} The target of the event
      * @return {boolean} Whether to not react to the click event.
      **/
-    ignoreTarget: function(node) {
+    ignoreTarget: function GrabToPan_ignoreTarget(node) {
         // Use matchesSelector to check whether the clicked element
         // is (a child of) an input element / link
         return node[matchesSelector](
