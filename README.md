@@ -36,6 +36,20 @@ define(function() {
 });
 ```
 
+# Supported browsers
+The following browsers are supported:
+
+* Chrome 7
+* Firefox 4
+* Internet Explorer 9
+* Opera 11.60
+* Safari 5.1
+
+Support for earlier versions of Chrome, Firefox, Opera and Safari can be added
+if you include a polyfill for `Function.prototype.bind`.
+To get support in Internet Explorer 8, you need to include a polyfill for
+`Element.prototype.addEventListener`. IE7- is explicitly not supported.
+
 # License
 
 Copyright 2013 Rob Wu <gwnRob@gmail.com>
