@@ -18,7 +18,8 @@
 var GrabToPan = (function GrabToPanClosure() {
   /**
    * Construct a GrabToPan instance for a given HTML element.
-   * @param options {{element: Element}}
+   * @param options.element {Element}
+   * @param options.ignoreTarget {function} optional. See `ignoreTarget(node)`
    **/
   function GrabToPan(options) {
     this.element = options.element;
