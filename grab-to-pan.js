@@ -38,6 +38,15 @@ var GrabToPan = (function GrabToPanClosure() {
   }
   GrabToPan.prototype = {
     /**
+     * Class name of element which can be grabbed
+     **/
+    CSS_CLASS_GRAB: 'grab-to-pan-grab',
+    /**
+     * Class name of element which is being dragged & panned
+     **/
+    CSS_CLASS_GRABBING: 'grab-to-pan-grabbing',
+
+    /**
      * Bind a mousedown event to the element to enable grab-detection.
      **/
     activate: function GrabToPan_activate() {
@@ -45,6 +54,7 @@ var GrabToPan = (function GrabToPanClosure() {
       // the listener is added only once, so there's no need to manually
       // check whether or not activate() has been called before.
       this.element.addEventListener('mousedown', this._onmousedown, true);
+      this.element.classList.add(this.CSS_CLASS_GRAB);
     },
     /**
      * Removes all events. Any pending pan session is immediately stopped.
@@ -53,6 +63,8 @@ var GrabToPan = (function GrabToPanClosure() {
       this.element.removeEventListener('mousedown', this._onmousedown, true);
       this.document.removeEventListener('mousemove', this._onmousemove, true);
       this.document.removeEventListener('mouseup', this._onmouseup, true);
+      this.element.classList.remove(this.CSS_CLASS_GRAB);
+      this.document.documentElement.classList.remove(this.CSS_CLASS_GRABBING);
     },
     /**
      * Whether to not pan if the target element is clicked.
@@ -82,6 +94,8 @@ var GrabToPan = (function GrabToPanClosure() {
       this.document.addEventListener('mouseup', this._onmouseup, true);
       event.preventDefault();
       event.stopPropagation();
+      this.element.classList.remove(this.CSS_CLASS_GRAB);
+      this.document.documentElement.classList.add(this.CSS_CLASS_GRABBING);
     },
     /**
      * @private
@@ -101,6 +115,8 @@ var GrabToPan = (function GrabToPanClosure() {
      **/
     _onmouseup: function GrabToPan__onmouseup(event) {
       this.document.removeEventListener('mousemove', this._onmousemove, true);
+      this.document.documentElement.classList.remove(this.CSS_CLASS_GRABBING);
+      this.element.classList.add(this.CSS_CLASS_GRAB);
     }
   };
 

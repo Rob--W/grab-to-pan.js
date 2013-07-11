@@ -1,6 +1,7 @@
 # Grab-to-pan.js
 
-A slim library with one purpose: An easy way to pan elements.
+A slim library with one purpose: An easy way to pan elements, i.e. change the scrolling
+offset of a container by moving the mouse while the mouse button is pressed.
 To see an example, check out [this demo](http://rob--w.github.io/grab-to-pan.js/demo.html):
 
 ```javascript
@@ -24,9 +25,9 @@ g2p.ignoreTarget = function(targetElement) {
 };
 ```
 
-
-In other words: This library allows one to change the scrolling offset of a
-container by moving the mouse while the mouse button is pressed.
+Two class names are introduced with this library, which can be used to give a
+visual indication that an element can be grabbed & dragged. See grab-to-drag.css
+for an example.
 
 ## Code conventions
 This library follows the [code conventions of PDF.js](https://github.com/mozilla/pdf.js/wiki/Style-Guide),
@@ -52,15 +53,17 @@ The following browsers are supported:
 
 * Chrome 7
 * Firefox 4
-* Internet Explorer 9
+* Internet Explorer 10
 * Opera 11.60
 * Safari 5.1
 
+Support for Internet Explorer 9 can be added by including a polyfill for `classList`.
+Support for Internet Explorer 8 can be added by including polyfills for `classList`,
+the DOM2 Event API, and `matchesSelector`.
+
 Support for earlier versions of Chrome, Firefox, Opera and Safari can be added
-if you include a polyfill for `Function.prototype.bind`.
-To get support in Internet Explorer 8, you need to include a polyfill for
-`Element.prototype.addEventListener` and `Element.prototype.matchesSelector`.
-IE7- is explicitly not supported.
+if you include a polyfill for `Function.prototype.bind` and `classList`.
+
 
 ## License
 
