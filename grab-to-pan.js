@@ -34,7 +34,7 @@ var GrabToPan = (function GrabToPanClosure() {
     this.deactivate = this.deactivate.bind(this);
     this._onmousedown = this._onmousedown.bind(this);
     this._onmousemove = this._onmousemove.bind(this);
-    this._onmouseup = this._onmouseup.bind(this);
+    this._endPan = this._endPan.bind(this);
   }
   GrabToPan.prototype = {
     /**
@@ -62,7 +62,7 @@ var GrabToPan = (function GrabToPanClosure() {
     deactivate: function GrabToPan_deactivate() {
       this.element.removeEventListener('mousedown', this._onmousedown, true);
       this.document.removeEventListener('mousemove', this._onmousemove, true);
-      this.document.removeEventListener('mouseup', this._onmouseup, true);
+      this.document.removeEventListener('mouseup', this._endPan, true);
       this.element.classList.remove(this.CSS_CLASS_GRAB);
       this.document.documentElement.classList.remove(this.CSS_CLASS_GRABBING);
     },
@@ -85,13 +85,26 @@ var GrabToPan = (function GrabToPanClosure() {
      **/
     _onmousedown: function GrabToPan__onmousedown(event) {
       if (event.button !== 0 || this.ignoreTarget(event.target)) return;
+      if (event.originalTarget) {
+        try {
+          /* jshint expr:true */
+          event.originalTarget.tagName;
+        } catch (e) {
+          // Mozilla-specific: element is a scrollbar (XUL element)
+          return;
+        }
+      }
 
       this.scrollLeftStart = this.element.scrollLeft;
       this.scrollTopStart = this.element.scrollTop;
       this.clientXStart = event.clientX;
       this.clientYStart = event.clientY;
       this.document.addEventListener('mousemove', this._onmousemove, true);
-      this.document.addEventListener('mouseup', this._onmouseup, true);
+      this.document.addEventListener('mouseup', this._endPan, true);
+      // When a scroll event occurs before a mousemove, assume that the user
+      // dragged a scrollbar (necessary for Opera Presto, Safari and IE)
+      // (not needed for Chrome/Firefox)
+      this.element.addEventListener('scroll', this._endPan, true);
       event.preventDefault();
       event.stopPropagation();
       this.element.classList.remove(this.CSS_CLASS_GRAB);
@@ -101,6 +114,7 @@ var GrabToPan = (function GrabToPanClosure() {
      * @private
      **/
     _onmousemove: function GrabToPan__onmousemove(event) {
+      this.element.removeEventListener('scroll', this._endPan, true);
       if (isLeftMouseReleased(event)) {
         this.document.removeEventListener('mousemove', this._onmousemove, true);
         return;
@@ -113,7 +127,8 @@ var GrabToPan = (function GrabToPanClosure() {
     /**
      * @private
      **/
-    _onmouseup: function GrabToPan__onmouseup(event) {
+    _endPan: function GrabToPan__endPan() {
+      this.element.removeEventListener('scroll', this._endPan, true);
       this.document.removeEventListener('mousemove', this._onmousemove, true);
       this.document.documentElement.classList.remove(this.CSS_CLASS_GRABBING);
       this.element.classList.add(this.CSS_CLASS_GRAB);
