@@ -64,6 +64,13 @@ the DOM2 Event API, and `matchesSelector`.
 Support for earlier versions of Chrome, Firefox, Opera and Safari can be added
 if you include a polyfill for `Function.prototype.bind` and `classList`.
 
+### Compatibility notes
+
+- In Safari for Windows and Chrome 21- for Windows, the cursor is not changed to
+  "grab" / "grabbing".
+- In Opera 12-, the "move" cursor is shown instead of a grab/grabbing cursor,
+  because custom cursors are not supported in Presto.
+
 
 ## License
 
