@@ -8,7 +8,6 @@
  * Each value flagged with !important, to make sure that the custom cursor is
  * always visible, regardless of any other cursor declarations.
  **/
-.grab-to-pan-grab,
 .grab-to-pan-grab * {
     cursor: url("grab.cur"), move !important;
     cursor: -webkit-grab !important;
@@ -19,5 +18,4 @@
     cursor: url("grabbing.cur"), move !important;
     cursor: -webkit-grabbing !important;
     cursor: -moz-grabbing !important;
-
 }
