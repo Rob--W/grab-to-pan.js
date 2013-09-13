@@ -77,14 +77,17 @@ var GrabToPan = (function GrabToPanClosure() {
         // Use matchesSelector to check whether the clicked element
         // is (a child of) an input element / link
         return node[matchesSelector](
-            'a, * a, input, textarea, button, button *, select, option'
+            'a[href], a[href] *, ' +
+            'input, textarea, button, button *, select, option'
         );
     },
     /**
      * @private
      **/
     _onmousedown: function GrabToPan__onmousedown(event) {
-      if (event.button !== 0 || this.ignoreTarget(event.target)) return;
+      if (event.button !== 0 || this.ignoreTarget(event.target)) {
+        return;
+      }
       if (event.originalTarget) {
         try {
           /* jshint expr:true */
@@ -153,8 +156,8 @@ var GrabToPan = (function GrabToPanClosure() {
   // whether event.which for onmousemove is reliable
   var isNotIEorIsIE10plus = !document.documentMode || document.documentMode > 9;
   var chrome = window.chrome;
-  var isChrome15OrOpera15plus = chrome&& (chrome.webstore || chrome.app);
-  //                                      ^ Chrome 15+       ^ Opera 15+
+  var isChrome15OrOpera15plus = chrome && (chrome.webstore || chrome.app);
+  //                                       ^ Chrome 15+       ^ Opera 15+
   var isSafari6plus = /Apple/.test(navigator.vendor) &&
                       /Version\/([6-9]\d*|[1-5]\d+)/.test(navigator.userAgent);
 
