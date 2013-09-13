@@ -65,6 +65,7 @@ var GrabToPan = (function GrabToPanClosure() {
         }
       }
     },
+
     /**
      * Removes all events. Any pending pan session is immediately stopped.
      **/
@@ -81,6 +82,7 @@ var GrabToPan = (function GrabToPanClosure() {
         }
       }
     },
+
     toggle: function GrabToPan_toggle() {
       if (this.active) {
         this.deactivate();
@@ -88,6 +90,7 @@ var GrabToPan = (function GrabToPanClosure() {
         this.activate();
       }
     },
+
     /**
      * Whether to not pan if the target element is clicked.
      * Override this method to change the default behaviour.
@@ -102,6 +105,7 @@ var GrabToPan = (function GrabToPanClosure() {
         'a[href], a[href] *, input, textarea, button, button *, select, option'
       );
     },
+
     /**
      * @private
      **/
@@ -134,6 +138,7 @@ var GrabToPan = (function GrabToPanClosure() {
       this.element.classList.remove(this.CSS_CLASS_GRAB);
       this.document.documentElement.classList.add(this.CSS_CLASS_GRABBING);
     },
+
     /**
      * @private
      **/
@@ -148,6 +153,7 @@ var GrabToPan = (function GrabToPanClosure() {
       this.element.scrollTop = this.scrollTopStart - yDiff;
       this.element.scrollLeft = this.scrollLeftStart - xDiff;
     },
+
     /**
      * @private
      **/
