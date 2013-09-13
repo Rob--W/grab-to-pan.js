@@ -26,7 +26,7 @@ var GrabToPan = (function GrabToPanClosure() {
     this.element = options.element;
     this.document = options.element.ownerDocument;
     if (typeof options.ignoreTarget === 'function') {
-        this.ignoreTarget = options.ignoreTarget;
+      this.ignoreTarget = options.ignoreTarget;
     }
 
     // Bind the contexts to ensure that `this` always points to
@@ -75,12 +75,11 @@ var GrabToPan = (function GrabToPanClosure() {
      * @return {boolean} Whether to not react to the click event.
      **/
     ignoreTarget: function GrabToPan_ignoreTarget(node) {
-        // Use matchesSelector to check whether the clicked element
-        // is (a child of) an input element / link
-        return node[matchesSelector](
-            'a[href], a[href] *, ' +
-            'input, textarea, button, button *, select, option'
-        );
+      // Use matchesSelector to check whether the clicked element
+      // is (a child of) an input element / link
+      return node[matchesSelector](
+        'a[href], a[href] *, input, textarea, button, button *, select, option'
+      );
     },
     /**
      * @private
@@ -142,15 +141,15 @@ var GrabToPan = (function GrabToPanClosure() {
   // Get the correct (vendor-prefixed) name of the matches method.
   var matchesSelector;
   ['webkitM', 'mozM', 'msM', 'oM', 'm'].some(function(prefix) {
-      var name = prefix + 'atches';
-      if (name in document.documentElement) {
-          matchesSelector = name;
-      }
-      name += 'Selector';
-      if (name in document.documentElement) {
-          matchesSelector = name;
-      }
-      return matchesSelector; // If found, then truthy, and [].some() ends.
+    var name = prefix + 'atches';
+    if (name in document.documentElement) {
+      matchesSelector = name;
+    }
+    name += 'Selector';
+    if (name in document.documentElement) {
+      matchesSelector = name;
+    }
+    return matchesSelector; // If found, then truthy, and [].some() ends.
   });
 
   // Browser sniffing because it's impossible to feature-detect
