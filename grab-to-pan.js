@@ -21,6 +21,9 @@ var GrabToPan = (function GrabToPanClosure() {
    * Construct a GrabToPan instance for a given HTML element.
    * @param options.element {Element}
    * @param options.ignoreTarget {function} optional. See `ignoreTarget(node)`
+   * @param options.onActiveChanged {function(boolean)} optional. Called
+   *  when grab-to-pan is (de)activated. The first argument is a boolean that
+   *  shows whether grab-to-pan is activated.
    **/
   function GrabToPan(options) {
     this.element = options.element;
@@ -28,6 +31,7 @@ var GrabToPan = (function GrabToPanClosure() {
     if (typeof options.ignoreTarget === 'function') {
       this.ignoreTarget = options.ignoreTarget;
     }
+    this.onActiveChanged = options.onActiveChanged;
 
     // Bind the contexts to ensure that `this` always points to
     // the GrabToPan instance.
@@ -51,21 +55,30 @@ var GrabToPan = (function GrabToPanClosure() {
      * Bind a mousedown event to the element to enable grab-detection.
      **/
     activate: function GrabToPan_activate() {
-      // When addEventListener is repeatedly called with the same arguments,
-      // the listener is added only once, so there's no need to manually
-      // check whether or not activate() has been called before.
-      this.element.addEventListener('mousedown', this._onmousedown, true);
-      this.element.classList.add(this.CSS_CLASS_GRAB);
+      if (!this.active) {
+        this.active = true;
+        this.element.addEventListener('mousedown', this._onmousedown, true);
+        this.element.classList.add(this.CSS_CLASS_GRAB);
+        if (this.onActiveChanged) {
+          this.onActiveChanged(true);
+        }
+      }
     },
     /**
      * Removes all events. Any pending pan session is immediately stopped.
      **/
     deactivate: function GrabToPan_deactivate() {
-      this.element.removeEventListener('mousedown', this._onmousedown, true);
-      this.document.removeEventListener('mousemove', this._onmousemove, true);
-      this.document.removeEventListener('mouseup', this._endPan, true);
-      this.element.classList.remove(this.CSS_CLASS_GRAB);
-      this.document.documentElement.classList.remove(this.CSS_CLASS_GRABBING);
+      if (this.active) {
+        this.active = false;
+        this.element.removeEventListener('mousedown', this._onmousedown, true);
+        this.document.removeEventListener('mousemove', this._onmousemove, true);
+        this.document.removeEventListener('mouseup', this._endPan, true);
+        this.element.classList.remove(this.CSS_CLASS_GRAB);
+        this.document.documentElement.classList.remove(this.CSS_CLASS_GRABBING);
+        if (this.onActiveChanged) {
+          this.onActiveChanged(false);
+        }
+      }
     },
     /**
      * Whether to not pan if the target element is clicked.
