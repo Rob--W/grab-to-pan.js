@@ -37,6 +37,7 @@ var GrabToPan = (function GrabToPanClosure() {
     // the GrabToPan instance.
     this.activate = this.activate.bind(this);
     this.deactivate = this.deactivate.bind(this);
+    this.toggle = this.toggle.bind(this);
     this._onmousedown = this._onmousedown.bind(this);
     this._onmousemove = this._onmousemove.bind(this);
     this._endPan = this._endPan.bind(this);
@@ -78,6 +79,13 @@ var GrabToPan = (function GrabToPanClosure() {
         if (this.onActiveChanged) {
           this.onActiveChanged(false);
         }
+      }
+    },
+    toggle: function GrabToPan_toggle() {
+      if (this.active) {
+        this.deactivate();
+      } else {
+        this.activate();
       }
     },
     /**

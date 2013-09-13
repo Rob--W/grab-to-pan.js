@@ -16,6 +16,12 @@ var g2p = new GrabToPan({
 g2p.activate();
 // Deactivate the grab-to-pan behaviour
 g2p.deactivate();
+// Toggle the grab-to-pan behaviour: Activate if not activated, deactivate otherwise.
+g2p.toggle();
+// Is grab-to-pan active?
+if (g2p.active) {
+  console.log("Grab to pan is active!");
+}
 ```
 
 By default, when a link or input element is clicked, panning
