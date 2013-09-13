@@ -1,12 +1,7 @@
-/**
- * Grab/grabbing cursors for every browser except for Opera 12-
+/* Copyright 2013 Rob Wu <gwnRob@gmail.com>
+ * https://github.com/Rob--W/grab-to-pan.js
+ *
  * grab.cur and grabbing.cur are taken from Firefox's repository.
- *
- * First set a URL-cursor fallback. This resource will not be loaded if one of
- * the next vendor-prefixed grab[bing]  value is recognized by the browser.
- *
- * Each value flagged with !important, to make sure that the custom cursor is
- * always visible, regardless of any other cursor declarations.
  **/
 .grab-to-pan-grab * {
     cursor: url("grab.cur"), move !important;
