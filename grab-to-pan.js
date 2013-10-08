@@ -24,7 +24,7 @@ var GrabToPan = (function GrabToPanClosure() {
    * @param options.onActiveChanged {function(boolean)} optional. Called
    *  when grab-to-pan is (de)activated. The first argument is a boolean that
    *  shows whether grab-to-pan is activated.
-   **/
+   */
   function GrabToPan(options) {
     this.element = options.element;
     this.document = options.element.ownerDocument;
@@ -45,16 +45,16 @@ var GrabToPan = (function GrabToPanClosure() {
   GrabToPan.prototype = {
     /**
      * Class name of element which can be grabbed
-     **/
+     */
     CSS_CLASS_GRAB: 'grab-to-pan-grab',
     /**
      * Class name of element which is being dragged & panned
-     **/
+     */
     CSS_CLASS_GRABBING: 'grab-to-pan-grabbing',
 
     /**
      * Bind a mousedown event to the element to enable grab-detection.
-     **/
+     */
     activate: function GrabToPan_activate() {
       if (!this.active) {
         this.active = true;
@@ -68,7 +68,7 @@ var GrabToPan = (function GrabToPanClosure() {
 
     /**
      * Removes all events. Any pending pan session is immediately stopped.
-     **/
+     */
     deactivate: function GrabToPan_deactivate() {
       if (this.active) {
         this.active = false;
@@ -97,7 +97,7 @@ var GrabToPan = (function GrabToPanClosure() {
      *
      * @param node {Element} The target of the event
      * @return {boolean} Whether to not react to the click event.
-     **/
+     */
     ignoreTarget: function GrabToPan_ignoreTarget(node) {
       // Use matchesSelector to check whether the clicked element
       // is (a child of) an input element / link
@@ -108,7 +108,7 @@ var GrabToPan = (function GrabToPanClosure() {
 
     /**
      * @private
-     **/
+     */
     _onmousedown: function GrabToPan__onmousedown(event) {
       if (event.button !== 0 || this.ignoreTarget(event.target)) {
         return;
@@ -141,7 +141,7 @@ var GrabToPan = (function GrabToPanClosure() {
 
     /**
      * @private
-     **/
+     */
     _onmousemove: function GrabToPan__onmousemove(event) {
       this.element.removeEventListener('scroll', this._endPan, true);
       if (isLeftMouseReleased(event)) {
@@ -156,7 +156,7 @@ var GrabToPan = (function GrabToPanClosure() {
 
     /**
      * @private
-     **/
+     */
     _endPan: function GrabToPan__endPan() {
       this.element.removeEventListener('scroll', this._endPan, true);
       this.document.removeEventListener('mousemove', this._onmousemove, true);
@@ -193,7 +193,7 @@ var GrabToPan = (function GrabToPanClosure() {
    * @param event {MouseEvent}
    * @return {boolean} True if the left mouse button is not pressed.
    *                   False if unsure or if the left mouse button is pressed.
-   **/
+   */
   function isLeftMouseReleased(event) {
     if ('buttons' in event && isNotIEorIsIE10plus) {
       // http://www.w3.org/TR/DOM-Level-3-Events/#events-MouseEvent-buttons
