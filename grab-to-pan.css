@@ -14,3 +14,13 @@
     cursor: -webkit-grabbing !important;
     cursor: -moz-grabbing !important;
 }
+.grab-to-pan-grab a[href],
+.grab-to-pan-grab a[href] *,
+.grab-to-pan-grab input,
+.grab-to-pan-grab textarea,
+.grab-to-pan-grab button,
+.grab-to-pan-grab button *,
+.grab-to-pan-grab select,
+.grab-to-pan-grab option {
+    cursor: auto !important;
+}
