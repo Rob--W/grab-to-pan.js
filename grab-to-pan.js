@@ -73,10 +73,8 @@ var GrabToPan = (function GrabToPanClosure() {
       if (this.active) {
         this.active = false;
         this.element.removeEventListener('mousedown', this._onmousedown, true);
-        this.document.removeEventListener('mousemove', this._onmousemove, true);
-        this.document.removeEventListener('mouseup', this._endPan, true);
+        this._endPan();
         this.element.classList.remove(this.CSS_CLASS_GRAB);
-        this.document.documentElement.classList.remove(this.CSS_CLASS_GRABBING);
         if (this.onActiveChanged) {
           this.onActiveChanged(false);
         }
@@ -160,6 +158,7 @@ var GrabToPan = (function GrabToPanClosure() {
     _endPan: function GrabToPan__endPan() {
       this.element.removeEventListener('scroll', this._endPan, true);
       this.document.removeEventListener('mousemove', this._onmousemove, true);
+      this.document.removeEventListener('mouseup', this._endPan, true);
       this.document.documentElement.classList.remove(this.CSS_CLASS_GRABBING);
       this.element.classList.add(this.CSS_CLASS_GRAB);
     }
