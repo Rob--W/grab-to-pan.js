@@ -41,16 +41,28 @@ var GrabToPan = (function GrabToPanClosure() {
     this._onmousedown = this._onmousedown.bind(this);
     this._onmousemove = this._onmousemove.bind(this);
     this._endPan = this._endPan.bind(this);
+
+    // This overlay will be inserted in the document when the mouse moves during
+    // a grab operation, to ensure that the cursor has the desired appearance.
+    var overlay = this.overlay = document.createElement('div');
+    // Inline styles to get maximum CSS specifity
+    overlay.style.position = 'fixed';
+    overlay.style.background = 'transparent';
+    overlay.style.display = 'block';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.overflow = 'hidden';
+    overlay.style.zIndex = '2000000000';
+    // Inherit cursor style via CSS style sheet:
+    overlay.className = 'grab-to-pan-grabbing';
   }
   GrabToPan.prototype = {
     /**
      * Class name of element which can be grabbed
      */
     CSS_CLASS_GRAB: 'grab-to-pan-grab',
-    /**
-     * Class name of element which is being dragged & panned
-     */
-    CSS_CLASS_GRABBING: 'grab-to-pan-grabbing',
 
     /**
      * Bind a mousedown event to the element to enable grab-detection.
@@ -133,7 +145,6 @@ var GrabToPan = (function GrabToPanClosure() {
       this.element.addEventListener('scroll', this._endPan, true);
       event.preventDefault();
       event.stopPropagation();
-      this.element.classList.remove(this.CSS_CLASS_GRAB);
       this.document.documentElement.classList.add(this.CSS_CLASS_GRABBING);
     },
 
@@ -143,13 +154,16 @@ var GrabToPan = (function GrabToPanClosure() {
     _onmousemove: function GrabToPan__onmousemove(event) {
       this.element.removeEventListener('scroll', this._endPan, true);
       if (isLeftMouseReleased(event)) {
-        this.document.removeEventListener('mousemove', this._onmousemove, true);
+        this._endPan();
         return;
       }
       var xDiff = event.clientX - this.clientXStart;
       var yDiff = event.clientY - this.clientYStart;
       this.element.scrollTop = this.scrollTopStart - yDiff;
       this.element.scrollLeft = this.scrollLeftStart - xDiff;
+      if (!this.overlay.parentNode) {
+        document.body.appendChild(this.overlay);
+      }
     },
 
     /**
@@ -159,8 +173,9 @@ var GrabToPan = (function GrabToPanClosure() {
       this.element.removeEventListener('scroll', this._endPan, true);
       this.document.removeEventListener('mousemove', this._onmousemove, true);
       this.document.removeEventListener('mouseup', this._endPan, true);
-      this.document.documentElement.classList.remove(this.CSS_CLASS_GRABBING);
-      this.element.classList.add(this.CSS_CLASS_GRAB);
+      if (this.overlay.parentNode) {
+        this.overlay.parentNode.removeChild(this.overlay);
+      }
     }
   };
 

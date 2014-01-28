@@ -3,28 +3,19 @@
  *
  * grab.cur and grabbing.cur are taken from Firefox's repository.
  **/
-.grab-to-pan-grab * {
+.grab-to-pan-grab {
     cursor: url("grab.cur"), move !important;
     cursor: -webkit-grab !important;
     cursor: -moz-grab !important;
     cursor: grab !important;
 }
-.grab-to-pan-grabbing,
-.grab-to-pan-grabbing * {
+.grab-to-pan-grab *:not(input):not(textarea):not(button):not(select):not(:link) {
+    cursor: inherit !important;
+}
+.grab-to-pan-grab:active,
+.grab-to-pan-grabbing {
     cursor: url("grabbing.cur"), move !important;
     cursor: -webkit-grabbing !important;
     cursor: -moz-grabbing !important;
     cursor: grabbing !important;
-}
-.grab-to-pan-grab input,
-.grab-to-pan-grab textarea,
-.grab-to-pan-grab button,
-.grab-to-pan-grab button *,
-.grab-to-pan-grab select,
-.grab-to-pan-grab option {
-    cursor: auto !important;
-}
-.grab-to-pan-grab a[href],
-.grab-to-pan-grab a[href] * {
-    cursor: pointer !important;
 }
