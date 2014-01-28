@@ -26,5 +26,5 @@
 }
 .grab-to-pan-grab a[href],
 .grab-to-pan-grab a[href] * {
-    cursor: cursor !important;
+    cursor: pointer !important;
 }
