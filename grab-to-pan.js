@@ -51,8 +51,10 @@ var GrabToPan = (function GrabToPanClosure() {
     overlay.style.display = 'block';
     overlay.style.top = '0';
     overlay.style.left = '0';
-    overlay.style.width = '100%';
-    overlay.style.height = '100%';
+    overlay.style.right = '0';
+    overlay.style.bottom = '0';
+    overlay.style.height = 'auto';
+    overlay.style.width = 'auto';
     overlay.style.overflow = 'hidden';
     overlay.style.zIndex = '2000000000';
     // Inherit cursor style via CSS style sheet:
