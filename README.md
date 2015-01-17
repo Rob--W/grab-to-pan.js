@@ -2,7 +2,7 @@
 
 A slim library with one purpose: An easy way to pan elements, i.e. change the scrolling
 offset of a container by moving the mouse while the mouse button is pressed.
-To see an example, check out [this demo](http://rob--w.github.io/grab-to-pan.js/demo.html):
+To see an example, check out [this demo](https://rob--w.github.io/grab-to-pan.js/demo.html):
 
 ```javascript
 // Define the container that has to pan on grab
@@ -37,6 +37,27 @@ g2p.ignoreTarget = function(targetElement) {
 Two class names are introduced with this library, which can be used to give a
 visual indication that an element can be grabbed & dragged. See grab-to-drag.css
 for an example.
+
+
+## Bookmarklet
+Here is a bookmarklet that offers Grab to pan functionality for most *simple* pages.
+Run it once to load and enable grab-to-pan, run it again to toggle grab-to-pan.
+
+```javascript
+javascript:(function(d,s) {
+if(d.robsgrabtopanbookmark)return(d.robsgrabtopanbookmark).toggle(),s;
+s=d.createElement('link');s.rel='stylesheet';
+s.href='https://rob--w.github.io/grab-to-pan.js/grab-to-pan.css';
+d.head.appendChild(s);
+s=d.createElement('script');
+s.src='https://rob--w.github.io/grab-to-pan.js/grab-to-pan.js';
+s.onload=function(){
+(d.robsgrabtopanbookmark=new(GrabToPan)({element:document.body})).activate();
+s.remove();
+};
+d.body.appendChild(s);
+})(document);
+```
 
 ## Code conventions
 This library follows the [code conventions of PDF.js](https://github.com/mozilla/pdf.js/wiki/Style-Guide),
@@ -83,6 +104,6 @@ if you include a polyfill for `Function.prototype.bind` and `classList`.
 
 ## License
 
-Copyright 2013 Rob Wu <gwnRob@gmail.com>
+Copyright 2013 - 2015 Rob Wu <rob@robwu.nl>
 
 Licensed under the Apache 2.0 License.
