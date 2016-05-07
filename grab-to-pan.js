@@ -220,7 +220,7 @@ var GrabToPan = (function GrabToPanClosure() {
       // http://www.w3.org/TR/DOM-Level-3-Events/#events-MouseEvent-buttons
       // Firefox 15+
       // Internet Explorer 10+
-      return !(event.buttons | 1);
+      return !(event.buttons & 1);
     }
     if (isChrome15OrOpera15plus || isSafari6plus) {
       // Chrome 14+
