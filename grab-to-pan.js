@@ -1,4 +1,4 @@
-/* Copyright 2013 Rob Wu <gwnRob@gmail.com>
+/* Copyright 2013 Rob Wu <rob@robwu.nl>
  * https://github.com/Rob--W/grab-to-pan.js
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -147,7 +147,11 @@ var GrabToPan = (function GrabToPanClosure() {
       this.element.addEventListener('scroll', this._endPan, true);
       event.preventDefault();
       event.stopPropagation();
-      this.document.documentElement.classList.add(this.CSS_CLASS_GRABBING);
+
+      var focusedElement = document.activeElement;
+      if (focusedElement && !focusedElement.contains(event.target)) {
+        focusedElement.blur();
+      }
     },
 
     /**
@@ -215,7 +219,7 @@ var GrabToPan = (function GrabToPanClosure() {
       // http://www.w3.org/TR/DOM-Level-3-Events/#events-MouseEvent-buttons
       // Firefox 15+
       // Internet Explorer 10+
-      return !(event.buttons | 1);
+      return !(event.buttons & 1);
     }
     if (isChrome15OrOpera15plus || isSafari6plus) {
       // Chrome 14+
