@@ -147,7 +147,6 @@ var GrabToPan = (function GrabToPanClosure() {
       this.element.addEventListener('scroll', this._endPan, true);
       event.preventDefault();
       event.stopPropagation();
-      this.document.documentElement.classList.add(this.CSS_CLASS_GRABBING);
 
       var focusedElement = document.activeElement;
       if (focusedElement && !focusedElement.contains(event.target)) {
