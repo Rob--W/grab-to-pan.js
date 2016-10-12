@@ -165,8 +165,18 @@ var GrabToPan = (function GrabToPanClosure() {
       }
       var xDiff = event.clientX - this.clientXStart;
       var yDiff = event.clientY - this.clientYStart;
-      this.element.scrollTop = this.scrollTopStart - yDiff;
-      this.element.scrollLeft = this.scrollLeftStart - xDiff;
+      var scrollTop = this.scrollTopStart - yDiff;
+      var scrollLeft = this.scrollLeftStart - xDiff;
+      if (this.element.scrollTo) {
+        this.element.scrollTo({
+          top: scrollTop,
+          left: scrollLeft,
+          behavior: 'instant',
+        });
+      } else {
+        this.element.scrollTop = scrollTop;
+        this.element.scrollLeft = scrollLeft;
+      }
       if (!this.overlay.parentNode) {
         document.body.appendChild(this.overlay);
       }
